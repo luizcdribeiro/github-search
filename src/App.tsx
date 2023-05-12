@@ -1,26 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import UserSearch from './components/UserSearch';
+import UserDetails from './components/UserDetails';
 
-function App() {
+const App: React.FC = () => {
+  const [selectedUser, setSelectedUser] = useState<any>(null);
+
+  const handleUserClick = (user: any) => {
+    setSelectedUser(user);
+  };
+
+  const handleBackClick = () => {
+    setSelectedUser(null);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container mx-auto mt-8">
+      {selectedUser ? (
+        <>
+          <button  
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            onClick={handleBackClick}
+          >
+            Retornar
+          </button>
+          <UserDetails user={selectedUser} />
+        </>
+      ) : (
+        <UserSearch onUserClick={handleUserClick} />
+      )}
+
     </div>
   );
-}
+};
 
 export default App;
