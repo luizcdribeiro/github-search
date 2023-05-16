@@ -4,12 +4,17 @@
 
 O GitHub User Search é uma aplicação web desenvolvida com React, TypeScript e Jest que permite pesquisar usuários no GitHub e exibir suas informações. A aplicação consome a API pública de pesquisa do GitHub para recuperar os usuários com base no nome de usuário fornecido.
 
+## Capturas de Tela
+
+![Tela de pesquisa de usuário e detalhes](screenshots/funcionalidades.webm)
+
 ## Arquitetura Geral
 
 A aplicação segue uma arquitetura simples baseada em componentes. Os componentes principais são:
 
 - **UserSearch**: Componente responsável por exibir a página principal e permitir a pesquisa de usuários no GitHub.
 - **UserDetails**: Componente responsável por exibir informações detalhadas de um usuário específico.
+- **Users**: Componente responsável por exibir informações gerais dos usuários.
 
 ## Design Patterns
 
