@@ -6,7 +6,7 @@ O GitHub User Search é uma aplicação web desenvolvida com React, TypeScript e
 
 ## Capturas de Tela
 
-![Tela de pesquisa de usuário e detalhes](screenshots/funcionalidades.webm)
+![Tela de pesquisa de usuário e detalhes](https://github.com/luizcdribeiro/github-search/blob/eb2d95e79de3d739f5b215d75622f77617b7778f/screenshots/funcionalidades.webm)
 
 ## Arquitetura Geral
 
