@@ -1,14 +1,14 @@
 import React from 'react';
 import { UserProps } from '../../interfaces';
-
 interface UsersProps {
   user: UserProps;
   onUserClick: (user: UserProps) => void;
+  testId?: string;
 }
 
-const Users: React.FC<UsersProps> = ({ user, onUserClick }) => {
+const Users: React.FC<UsersProps> = ({ user, onUserClick, testId }) => {
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 max-w-xs sm:w-64">
+    <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 max-w-xs sm:w-64" data-testid={`user-${user.id}`} >
       <img className="rounded-t-lg" src={user.avatar_url} alt={user.login} />
 
       <div className="p-5">

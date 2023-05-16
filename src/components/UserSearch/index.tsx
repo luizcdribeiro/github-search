@@ -1,53 +1,53 @@
 import React, { useRef, useState } from 'react';
 import axios from 'axios';
-import User from '../Users';
+import Users from '../Users';
 import { UserProps } from '../../interfaces';
 
 type UserSearchProps = {
   onUserClick: (user: UserProps) => void;
+  searchedUsers: UserProps[];
+  onSearch: (searchedUsers: UserProps[]) => void;
 };
 
-const UserSearch: React.FC<UserSearchProps> = ({ onUserClick }) => {
+const UserSearch: React.FC<UserSearchProps> = ({ onUserClick, searchedUsers, onSearch }) => {
   const [searchUser, setSearchUser] = useState('');
-  const [users, setUsers] = useState<UserProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const searchInputRef = useRef<HTMLInputElement>(null);
-  
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target; 
+    const { value } = event.target;
     setSearchUser(value);
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const searchUserValue = searchInputRef.current?.value;
     setSearchUser(searchUserValue || '');
     searchInputRef.current?.blur();
-    
+
     if (!searchUserValue) {
       setError('Digite um nome de usuário válido.');
-      setUsers([]);
+      onSearch([]);
       return;
     }
     setError('');
     handleSearch();
   };
-  
+
   const handleSearch = async () => {
     setLoading(true);
-    setUsers([]);
-    
+
     try {
       const response = await axios.get(`https://api.github.com/search/users?q=${searchUser}`);
-      
+
       const { items } = response.data;
 
       if (items.length > 10) {
-        setUsers(items.slice(0, Math.min(items.length, 10)));
+        onSearch(items.slice(0, Math.min(items.length, 10)));
         setLoading(false);
       } else {
-        setUsers(items);
+        onSearch(items);
         setLoading(false);
       }
     } catch (error) {
@@ -58,7 +58,7 @@ const UserSearch: React.FC<UserSearchProps> = ({ onUserClick }) => {
 
   return (
     <div data-testid="user-search">
-      <form noValidate onSubmit={handleSubmit}>   
+      <form noValidate onSubmit={handleSubmit}>
         <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Buscar</label>
 
         <div className="relative mb-8">
@@ -73,32 +73,43 @@ const UserSearch: React.FC<UserSearchProps> = ({ onUserClick }) => {
             id="default-search"
             className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Digite um nome de usuário"
-            required 
-            value={searchUser} 
-            onChange={handleInputChange} 
+            required
+            value={searchUser}
+            onChange={handleInputChange}
             ref={searchInputRef}
           />
 
-          <button type="submit" className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" data-testid="search-button" >Buscar</button>
+          <button
+            type="submit"
+            className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            data-testid="search-button"
+          >
+            Buscar
+          </button>
         </div>
       </form>
 
       {error && <p className="flex items-center text-red-500 mt-2">{error}</p>}
 
-      {loading && (
+      {loading ? (
         <div className="flex justify-center items-center mt-28">
           <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-white" data-testid="loading-spinner"></div>
         </div>
+      ) : (
+        <div className="flex align-middle container mx-auto flex-wrap gap-7">
+          {searchedUsers.map((user) => (
+            <Users
+              user={user}
+              onUserClick={onUserClick}
+              key={user.id}
+              data-testid={`user-${user.id}`}
+             />
+          ))}
+        </div>
       )}
-      
-      <div className="flex align-middle container mx-auto flex-wrap gap-7">
-        {users.map(user => (
-          <User user={user} onUserClick={onUserClick} key={user.id} />
-        ))}
-        
-      </div>
     </div>
   );
 };
 
 export default UserSearch;
+

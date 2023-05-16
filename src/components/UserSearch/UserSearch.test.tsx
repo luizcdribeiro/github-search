@@ -16,8 +16,11 @@ describe('UserSearch Test Component', () => {
       site_admin: false
     };
     const mockOnUserClick = jest.fn();
+    const mockSearch = jest.fn();
+
     (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValueOnce({ data: { items: [mockUser] } });
-    render(<UserSearch onUserClick={mockOnUserClick} />);
+    render(<UserSearch onUserClick={mockOnUserClick} onSearch={mockSearch} searchedUsers={[mockUser]}  />);
+
     const input = screen.getByLabelText('Buscar');
     const button = screen.getByTestId('search-button');
 
@@ -33,7 +36,9 @@ describe('UserSearch Test Component', () => {
   test('should display error message when form is submitted with an empty search term', () => {
 
     const mockOnUserClick = jest.fn();
-    render(<UserSearch onUserClick={mockOnUserClick} />);
+    const mockSearch = jest.fn();
+
+    render(<UserSearch onUserClick={mockOnUserClick} onSearch={mockSearch} searchedUsers={[]}  />);
     const button = screen.getByTestId('search-button');
 
     fireEvent.click(button);
@@ -51,8 +56,10 @@ describe('UserSearch Test Component', () => {
       site_admin: false
     };
     const mockOnUserClick = jest.fn();
+    const mockSearch = jest.fn();
+
     (axios.get as jest.MockedFunction<typeof axios.get>).mockResolvedValueOnce({ data: { items: [mockUser] } });
-    render(<UserSearch onUserClick={mockOnUserClick} />);
+    render(<UserSearch onUserClick={mockOnUserClick} onSearch={mockSearch} searchedUsers={[mockUser]}  />);
     const input = screen.getByLabelText('Buscar');
     const button = screen.getByTestId('search-button');
 
@@ -69,8 +76,10 @@ describe('UserSearch Test Component', () => {
   test('should display error message when search fails', async () => {
 
     const mockOnUserClick = jest.fn();
+    const mockSearch = jest.fn();
+
     const axiosGetSpy = jest.spyOn(axios, 'get').mockRejectedValue(new Error('Houve um erro na busca. Por favor, tente novamente'));
-    render(<UserSearch onUserClick={mockOnUserClick} />);
+    render(<UserSearch onUserClick={mockOnUserClick} onSearch={mockSearch} searchedUsers={[]} />);
     const input = screen.getByLabelText('Buscar');
     const button = screen.getByTestId('search-button');
 
