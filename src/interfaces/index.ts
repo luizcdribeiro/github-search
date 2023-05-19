@@ -5,3 +5,9 @@ export interface UserProps {
   site_admin: boolean;
   html_url?: string;
 }
+export interface UserRepositoryInterface {
+  getUserByUsername(username: string): Promise<UserProps>;
+}
+export interface UserServiceInterface {
+  getUser(username: string): Promise<UserProps>;
+}
