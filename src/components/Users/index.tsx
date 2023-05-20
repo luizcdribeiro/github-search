@@ -1,12 +1,8 @@
 import React from 'react';
-import { UserProps } from '../../interfaces';
-interface UsersProps {
-  user: UserProps;
-  onUserClick: (user: UserProps) => void;
-  testId?: string;
-}
+import { UsersProps } from '../../interfaces';
 
-const Users: React.FC<UsersProps> = ({ user, onUserClick, testId }) => {
+const Users: React.FC<UsersProps> = ({ user, onUserClick }) => {
+  const isAdmin = user.site_admin ? true : false;
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 max-w-xs sm:w-64" data-testid={`user-${user.id}`} >
       <img className="rounded-t-lg" src={user.avatar_url} alt={user.login} />
@@ -17,7 +13,7 @@ const Users: React.FC<UsersProps> = ({ user, onUserClick, testId }) => {
         </h5>
 
         <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-          {user.site_admin ? 'Administrador' : 'Não é administrador'}
+          {isAdmin ? 'Administrador' : 'Não é administrador'}
         </p>
 
         <button

@@ -1,18 +1,15 @@
 import React, { useRef, useState } from 'react';
-import axios from 'axios';
 import Users from '../Users';
-import { UserProps } from '../../interfaces';
+import { UserSearchProps } from '../../interfaces';
+import { UserSearchService } from '../../services/UserService';
 
-type UserSearchProps = {
-  onUserClick: (user: UserProps) => void;
-  searchedUsers: UserProps[];
-  onSearch: (searchedUsers: UserProps[]) => void;
-};
 
 const UserSearch: React.FC<UserSearchProps> = ({ onUserClick, searchedUsers, onSearch }) => {
   const [searchUser, setSearchUser] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const userSearchService = new UserSearchService();
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,21 +34,15 @@ const UserSearch: React.FC<UserSearchProps> = ({ onUserClick, searchedUsers, onS
 
   const handleSearch = async () => {
     setLoading(true);
-
     try {
-      const response = await axios.get(`https://api.github.com/search/users?q=${searchUser}`);
-
-      const { items } = response.data;
-
-      if (items.length > 10) {
-        onSearch(items.slice(0, Math.min(items.length, 10)));
-        setLoading(false);
-      } else {
+      await userSearchService.searchUsers(searchUser, 10, (items) => {
         onSearch(items);
-        setLoading(false);
-      }
+      });
+  
+      setLoading(false);
     } catch (error) {
       setLoading(false);
+      setSearchUser('');
       setError('Houve um erro na busca. Por favor, tente novamente');
     }
   };
@@ -83,8 +74,9 @@ const UserSearch: React.FC<UserSearchProps> = ({ onUserClick, searchedUsers, onS
             type="submit"
             className="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             data-testid="search-button"
+            disabled={loading}
           >
-            Buscar
+            {loading ? 'Buscando...' : 'Buscar'}
           </button>
         </div>
       </form>

@@ -1,18 +1,12 @@
 import React from 'react';
-import { UserProps } from '../../interfaces';
-
-interface UserDetailsProps {
-  user: UserProps
-}
+import { UserDetailsProps } from '../../interfaces';
 
 const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
   return (
     <div className="max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden" data-testid="user-details">
       <img className="w-full" src={user.avatar_url} alt={user.login} />
-      <div className="px-6 py-4">
-        <p className="font-bold text-xl mb-2">{user.login}</p>
-      </div>
-      <div className="px-6 pt-4 pb-2">
+      <div className="px-6 py-4 pb-2">
+        <p className="font-bold text-xl mb-4">{user.login}</p>
         <a
           href={user.html_url}
           target="_blank"

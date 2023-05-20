@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import UserSearch from './components/UserSearch';
 import UserDetails from './components/UserDetails';
-import { UserProps } from './interfaces';
+import { User } from './interfaces';
 
 const App: React.FC = () => {
-  const [selectedUser, setSelectedUser] = useState<any>(null);
-  const [users, setUsers] = useState<UserProps[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [searchedUsers, setSearchedUsers] = useState<User[]>([]);
 
-  const handleUserClick = (user: UserProps) => {
+  const handleUserClick = (user: User) => {
     setSelectedUser(user);
   };
 
@@ -15,13 +15,13 @@ const App: React.FC = () => {
     setSelectedUser(null);
   };
 
-  const handleSearch = (searchedUsers: UserProps[]) => {
-    setUsers(searchedUsers);
+  const handleSearch = (searchedUsers: User[]) => {
+    setSearchedUsers(searchedUsers);
   };
 
-  return (
-    <div className="container mx-auto mt-8">
-      {selectedUser ? (
+  function renderContent() {
+    if (selectedUser) {
+      return (
         <>
           <button
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -33,9 +33,21 @@ const App: React.FC = () => {
           </button>
           <UserDetails user={selectedUser} />
         </>
-      ) : (
-        <UserSearch onUserClick={handleUserClick} onSearch={handleSearch} searchedUsers={users} />
-      )}
+      );
+    } else {
+      return (
+        <UserSearch
+          onUserClick={handleUserClick}
+          onSearch={handleSearch}
+          searchedUsers={searchedUsers}
+        />
+      );
+    }
+  }
+
+  return (
+    <div className="container mx-auto mt-8">
+      {renderContent()}
     </div>
   );
 };
