@@ -1,20 +1,18 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Users from '../Users';
 import { UserSearchProps } from '../../interfaces';
 import { UserSearchService } from '../../services/UserService';
-
 
 const UserSearch: React.FC<UserSearchProps> = ({ onUserClick, searchedUsers, onSearch }) => {
   const [searchUser, setSearchUser] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const userSearchService = new UserSearchService();
+  const userSearchService = useRef(new UserSearchService());
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setSearchUser(value);
+    setSearchUser(event.target.value);
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -35,10 +33,9 @@ const UserSearch: React.FC<UserSearchProps> = ({ onUserClick, searchedUsers, onS
   const handleSearch = async () => {
     setLoading(true);
     try {
-      await userSearchService.searchUsers(searchUser, 10, (items) => {
+      await userSearchService.current.searchUsers(searchUser, 10, (items) => {
         onSearch(items);
       });
-  
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -46,6 +43,10 @@ const UserSearch: React.FC<UserSearchProps> = ({ onUserClick, searchedUsers, onS
       setError('Houve um erro na busca. Por favor, tente novamente');
     }
   };
+
+  useEffect(() => {
+    searchInputRef.current?.focus();
+  }, []);
 
   return (
     <div data-testid="user-search">

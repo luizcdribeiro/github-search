@@ -2,7 +2,7 @@
 
 ## Descrição
 
-O GitHub User Search é uma aplicação web desenvolvida com React, TypeScript e Jest que permite pesquisar usuários no GitHub e exibir suas informações. A aplicação consome a API pública de pesquisa do GitHub para recuperar os usuários com base no nome de usuário fornecido.
+O GitHub User Search é uma aplicação web desenvolvida com React, TypeScript e Jest que permite pesquisar usuários no GitHub e exibir suas informações. A aplicação segue os princípios do Domain-Driven Design (DDD) e SOLID, adotando uma arquitetura em camadas para separar e organizar as responsabilidades.
 
 ## Capturas de Tela
 
@@ -14,16 +14,17 @@ O GitHub User Search é uma aplicação web desenvolvida com React, TypeScript e
 
 A aplicação segue uma arquitetura simples baseada em componentes. Os componentes principais são:
 
-- **UserSearch**: Componente responsável por exibir a página principal e permitir a pesquisa de usuários no GitHub.
-- **UserDetails**: Componente responsável por exibir informações detalhadas de um usuário específico.
-- **Users**: Componente responsável por exibir informações gerais dos usuários.
+- **Camada de Apresentação**: Responsável pela interface com o usuário, exibição dos componentes visuais e interações com o usuário. Utiliza o React para construir os componentes reutilizáveis, seguindo o padrão Component-Based.
+- **Camada de Domínio**: Responsável pela lógica de negócio da aplicação. Contém as regras e operações relacionadas aos usuários do GitHub. Aqui, temos o serviço 
+- **Camada de Domínio**: Responsável pela lógica de negócio da aplicação. Contém as regras e operações relacionadas aos usuários do GitHub. Aqui, temos o serviço `UserSearchService` que realiza a busca de usuários no GitHub com base no nome de usuário fornecido.
+- **Camada de Repositório:**: Responsável pela persistência de dados e comunicação com a API do GitHub. O repositório `UserRepository` utiliza a biblioteca axios para realizar as requisições HTTP e recuperar os usuários da API.
 
 ## Design Patterns
 
 A aplicação utiliza os seguintes padrões de design:
 
-- **Component-Based**: Os componentes são construídos seguindo o padrão de design de componentes reutilizáveis, permitindo uma estrutura modular e escalável.
-- **State Management**: O estado da aplicação é gerenciado localmente usando o hook `useState` do React.
+- **Repository**: O padrão Repository é aplicado para lidar com a persistência de dados. O `UserRepository` encapsula as operações de acesso aos dados dos usuários do GitHub.
+- **Service**: O padrão Service é utilizado para lidar com a lógica de negócio da aplicação. O `UserSearchService` contém a lógica para buscar os usuários no GitHub e processar os resultados.
 
 ## Pacotes Utilizados
 
@@ -41,8 +42,9 @@ Siga as etapas abaixo para executar a aplicação localmente:
 2. Clone o repositório do GitHub User Search.
 3. Navegue até o diretório do projeto no terminal.
 4. Instale as dependências do projeto executando o comando `npm install` ou `yarn install`.
-5. Execute o comando `npm start` ou `yarn start` para iniciar o servidor de desenvolvimento.
-6. A aplicação estará disponível em `http://localhost:3000` no seu navegador.
+5. Crie um arquivo .env na raiz do projeto e defina a variável `REACT_APP_BASE_URL` com a base URL da API do GitHub.
+6. Execute o comando `npm start` ou `yarn start` para iniciar o servidor de desenvolvimento.
+7. A aplicação estará disponível em `http://localhost:3000` no seu navegador.
 
 ## Testes
 

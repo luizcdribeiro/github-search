@@ -7,7 +7,7 @@ const App: React.FC = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [searchedUsers, setSearchedUsers] = useState<User[]>([]);
 
-  const handleUserClick = (user: User) => {
+  const handleUserSelection = (user: User) => {
     setSelectedUser(user);
   };
 
@@ -37,7 +37,7 @@ const App: React.FC = () => {
     } else {
       return (
         <UserSearch
-          onUserClick={handleUserClick}
+          onUserClick={handleUserSelection}
           onSearch={handleSearch}
           searchedUsers={searchedUsers}
         />

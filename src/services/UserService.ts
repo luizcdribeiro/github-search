@@ -1,3 +1,4 @@
+import { User } from '../interfaces';
 import { GithubRepository } from '../repositories/GithubRepository';
 
 export class UserSearchService {
@@ -7,7 +8,7 @@ export class UserSearchService {
     this.githubRepository = new GithubRepository();
   }
 
-  async searchUsers(searchUser: string, maxResults: number, onSearch: (items: any[]) => void) {
+  async searchUsers(searchUser: string, maxResults: number, onSearch: (items: User[]) => void) {
     try {
       const items = await this.githubRepository.searchUsers(searchUser);
       const limitedItems = items.slice(0, Math.min(items.length, maxResults));
