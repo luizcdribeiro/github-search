@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Users from '../Users';
 import { UserSearchProps } from '../../interfaces';
-import { UserSearchService } from '../../services/UserService';
+import { UserSearchService } from '../../services/UserSearchService';
 
 const UserSearch: React.FC<UserSearchProps> = ({ onUserClick, searchedUsers, onSearch }) => {
   const [searchUser, setSearchUser] = useState('');
