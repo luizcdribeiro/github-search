@@ -1,7 +1,7 @@
 import { UserSearchService } from './UserSearchService';
 
-describe('UserSearchService', () => {
-  it('deve chamar onSearch com os itens de usuário limitados', async () => {
+describe('UserSearchService Test', () => {
+  it('should call onSearch with limited user items', async () => {
     const searchUser = 'john';
     const maxResults = 5;
     const mockItems = [
@@ -28,7 +28,7 @@ describe('UserSearchService', () => {
     expect(onSearchMock).toHaveBeenCalledWith(mockItems.slice(0, maxResults));
   });
 
-  it('deve lançar um erro quando ocorrer um erro na busca', async () => {
+  it('should throw an error when a fetch error occurs', async () => {
     const searchUser = 'john';
     const maxResults = 5;
     const errorMock = new Error('Houve um erro na busca. Por favor, tente novamente');

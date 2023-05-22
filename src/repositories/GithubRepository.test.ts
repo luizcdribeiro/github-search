@@ -3,7 +3,7 @@ import { GithubRepository } from './GithubRepository';
 
 jest.mock('axios');
 
-describe('GithubRepository', () => {
+describe('GithubRepository Test', () => {
   let repository: GithubRepository;
 
   beforeEach(() => {
